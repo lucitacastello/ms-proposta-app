@@ -5,7 +5,6 @@ import com.github.lucitacastello.proposta_app.dto.PropostaResponseDTO;
 import com.github.lucitacastello.proposta_app.entities.Proposta;
 import com.github.lucitacastello.proposta_app.repository.PropostaRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
