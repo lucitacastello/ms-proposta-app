@@ -16,7 +16,7 @@ public interface PropostaMapper {
     PropostaMapper INSTANCE = Mappers.getMapper(PropostaMapper.class);
 
     //target -> saída  --  source -> entrada
-    @Mapping(target = "usuario.nome", source = "name")
+    @Mapping(target = "usuario.nome", source = "nome")
     @Mapping(target = "usuario.sobrenome", source = "sobrenome")
     @Mapping(target = "usuario.cpf", source = "cpf")
     @Mapping(target = "usuario.telefone", source = "telefone")

@@ -12,7 +12,7 @@ import lombok.Setter;
 
 public class PropostaRequestDTO {
 
-    private String name;
+    private String nome;
     private String sobrenome;
     private String cpf;
     private String telefone;
