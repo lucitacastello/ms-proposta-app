@@ -3,6 +3,7 @@ package com.github.lucitacastello.proposta_app.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "tb_usuario")
 public class Usuario {
 
     @Id
