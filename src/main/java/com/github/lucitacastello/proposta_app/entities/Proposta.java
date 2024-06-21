@@ -1,13 +1,6 @@
 package com.github.lucitacastello.proposta_app.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +27,8 @@ public class Proposta {
     private String observacao;
 
     //    1:1
-    @OneToOne
+    //salva o usuário no DB
+    @OneToOne(cascade = CascadeType.PERSIST) //pra não dar erro obj transiente, pq usuário ainda não existe
     @JoinColumn(name = "id_usuario") //FK
     private Usuario usuario;
 
