@@ -17,7 +17,11 @@ public class PropostaResponseDTO {
     private String cpf;
     private String telefone;
     private Double renda;
-    private Double valorSolicitado;
+
+    //modificado para String para solucionar o problema
+    //apresentar o valor no front
+    private String valorSolicitadoFmt;
+
     private int prazoPagamento;
     private Boolean aprovada;
     private String observacao;
