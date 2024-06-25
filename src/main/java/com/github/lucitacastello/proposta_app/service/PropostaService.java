@@ -16,13 +16,21 @@ public class PropostaService {
 
     private PropostaRepository propostaRepository;
 
+    private NotificacaoService notificacaoService;
 
     public PropostaResponseDTO criar(PropostaRequestDTO requestDTO) {
 
         Proposta proposta = PropostaMapper.INSTANCE.convertDtoToProposta(requestDTO);
-        proposta = propostaRepository.save(proposta);
+        proposta = propostaRepository.save(proposta); //cadastro com sucesso
 
-        return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+        //criar response -> objeto de resposta - response
+        PropostaResponseDTO response = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+        // "proposta-pendente.ex" criada em RabbitMQConfiguration.java
+        //notifica exchange
+        notificacaoService.notificar(response, "proposta-pendente.ex");
+
+       // return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+        return response;
     }
 
     public List<PropostaResponseDTO> obterProposta() {
