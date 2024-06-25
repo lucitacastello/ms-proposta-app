@@ -1,11 +1,17 @@
 package com.github.lucitacastello.proposta_app.config;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.ExchangeBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +19,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfiguration {
+
+    //pegando valor da application.properties
+    @Value("${rabbitmq.propostapendente.exchange}")
+    private String exchange;
 
     //filas
     //proposta cadastrada tem que ser consumida pelo ms-analise-credito
@@ -61,7 +71,7 @@ public class RabbitMQConfiguration {
     //criando Exchange
     @Bean
     public FanoutExchange criarFanoutExchangePropostaPendente(){
-        return ExchangeBuilder.fanoutExchange("proposta-pendente.ex").build();
+        return ExchangeBuilder.fanoutExchange(exchange).build();
     }
 
     // binding da aplicação
