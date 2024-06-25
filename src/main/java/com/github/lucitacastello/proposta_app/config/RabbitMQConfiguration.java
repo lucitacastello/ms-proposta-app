@@ -1,7 +1,6 @@
 package com.github.lucitacastello.proposta_app.config;
 
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -56,6 +55,24 @@ public class RabbitMQConfiguration {
         //para o Java ter permissões para realizar operações no modo RabbitMQ
     }
 
+    //criando Exchange
+    @Bean
+    public FanoutExchange criarFanoutExchangePropostaPendente(){
+        return ExchangeBuilder.fanoutExchange("proposta-pendente.ex").build();
+    }
 
+    // binding da aplicação
+    //passando a fila Queue e a Exchange
+    @Bean
+    public Binding criarBindingPropostaPendenteMsAnaliseCredito(){
+        return BindingBuilder.bind(criarFilaPropostaPendenteMsAnaliseCredito())
+                .to(criarFanoutExchangePropostaPendente());
+    }
+
+    @Bean
+    public Binding criarBindingPropostaPendenteMsNotificacao(){
+        return BindingBuilder.bind(criarFilaPropostaPendenteMsNotificacao())
+                .to(criarFanoutExchangePropostaPendente());
+    }
 
 }
