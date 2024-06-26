@@ -5,7 +5,6 @@ import com.github.lucitacastello.proposta_app.dto.PropostaResponseDTO;
 import com.github.lucitacastello.proposta_app.entities.Proposta;
 import com.github.lucitacastello.proposta_app.mapper.PropostaMapper;
 import com.github.lucitacastello.proposta_app.repository.PropostaRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +34,13 @@ public class PropostaService {
         proposta = propostaRepository.save(proposta); //cadastro com sucesso
 
         //criar response -> objeto de resposta - response
-        PropostaResponseDTO response = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+//        PropostaResponseDTO response = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
         // "proposta-pendente.ex" criada em RabbitMQConfiguration.java
         //notifica exchange
-        notificacaoService.notificar(response, exchange);
-
-       // return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
-        return response;
+//        notificacaoService.notificar(proposta, exchange);
+        notificarRabbitMQ(proposta);
+        return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+//        return response;
     }
 
     public List<PropostaResponseDTO> obterProposta() {
@@ -50,6 +49,24 @@ public class PropostaService {
 //        PropostaMapper.INSTANCE.convertListEntityToListDto(propostas);
 //        ou
         return PropostaMapper.INSTANCE.convertListEntityToListDto(propostaRepository.findAll());
+
+    }
+    //recebe response - se RabbitMQ estiver fora
+    private void notificarRabbitMQ(Proposta proposta){
+
+        try {
+            notificacaoService.notificar(proposta, exchange);
+        } catch (RuntimeException ex){
+            //Rabbit fora do ar
+            //atualizar registro DB
+            // coluna integrada
+            //pegar registros com integrada FALSE para atualizar depois
+            proposta.setIntegrada(false);
+            propostaRepository.save(proposta);
+
+        }
+
+
 
     }
 }
