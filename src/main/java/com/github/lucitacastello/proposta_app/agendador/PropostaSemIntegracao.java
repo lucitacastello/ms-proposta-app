@@ -6,7 +6,6 @@ import com.github.lucitacastello.proposta_app.service.NotificacaoRabbitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +17,12 @@ public class PropostaSemIntegracao {
     //implementação que trabalha com Logger
     private final Logger logger = LoggerFactory.getLogger(PropostaSemIntegracao.class);
 
-    private PropostaRepository propostaRepository;
+    private final PropostaRepository propostaRepository;
 
-    private NotificacaoRabbitService notificacaoRabbitService;
+    private final NotificacaoRabbitService notificacaoRabbitService;
 
     //recupera valores setados em application.properties
-    private String exchange;
+    private final String exchange;
 
     public PropostaSemIntegracao(PropostaRepository propostaRepository,
                                  NotificacaoRabbitService notificacaoRabbitService,

@@ -1,5 +1,6 @@
 package com.github.lucitacastello.proposta_app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,5 +33,6 @@ public class Usuario {
 
 //    1:1
     @OneToOne(mappedBy = "usuario")
+    @JsonBackReference // referencia a outra classe
     private Proposta proposta;
 }
