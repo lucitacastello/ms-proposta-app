@@ -18,14 +18,14 @@ public class PropostaService {
 
     private PropostaRepository propostaRepository;
 
-    private NotificacaoService notificacaoService;
+    private NotificacaoRabbitService notificacaoRabbitService;
 
     public PropostaService(@Value("${rabbitmq.propostapendente.exchange}") String exchange,
                            PropostaRepository propostaRepository,
-                           NotificacaoService notificacaoService) {
+                           NotificacaoRabbitService notificacaoRabbitService) {
         this.exchange = exchange; // pega do application.properties
         this.propostaRepository = propostaRepository;
-        this.notificacaoService = notificacaoService;
+        this.notificacaoRabbitService = notificacaoRabbitService;
     }
 
     public PropostaResponseDTO criar(PropostaRequestDTO requestDTO) {
@@ -37,7 +37,7 @@ public class PropostaService {
 //        PropostaResponseDTO response = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
         // "proposta-pendente.ex" criada em RabbitMQConfiguration.java
         //notifica exchange
-//        notificacaoService.notificar(proposta, exchange);
+//        notificacaoRabbitService.notificar(proposta, exchange);
         notificarRabbitMQ(proposta);
         return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
 //        return response;
@@ -55,7 +55,7 @@ public class PropostaService {
     private void notificarRabbitMQ(Proposta proposta){
 
         try {
-            notificacaoService.notificar(proposta, exchange);
+            notificacaoRabbitService.notificar(proposta, exchange);
         } catch (RuntimeException ex){
             //Rabbit fora do ar
             //atualizar registro DB

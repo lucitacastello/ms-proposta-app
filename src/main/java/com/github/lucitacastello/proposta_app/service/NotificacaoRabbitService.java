@@ -1,6 +1,5 @@
 package com.github.lucitacastello.proposta_app.service;
 
-import com.github.lucitacastello.proposta_app.dto.PropostaResponseDTO;
 import com.github.lucitacastello.proposta_app.entities.Proposta;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class NotificacaoService {
+public class NotificacaoRabbitService {
 
     private RabbitTemplate rabbitTemplate; //injeção pelo constructor
 
