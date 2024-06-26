@@ -26,7 +26,7 @@ public interface PropostaMapper {
     @Mapping(target = "usuario.renda", source = "renda")
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "aprovada",ignore = true)
-    @Mapping(target = "integrada",ignore = true)
+    @Mapping(target = "integrada",constant = "true") //colocar como padrão true pq se Rabbit fora, fica false
     @Mapping(target = "observacao",ignore = true)
 
     Proposta convertDtoToProposta(PropostaRequestDTO propostaRequestDTO);
