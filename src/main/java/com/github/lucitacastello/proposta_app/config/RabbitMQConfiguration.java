@@ -22,7 +22,9 @@ public class RabbitMQConfiguration {
 
     //pegando valor da application.properties
     @Value("${rabbitmq.propostapendente.exchange}")
-    private String exchange;
+    private String exchangePropostaPendente;
+    @Value("${rabbitmq.propostaconcluida.exchange}")
+    private String exchangePropostaConcluida;
 
     //filas
     //proposta cadastrada tem que ser consumida pelo ms-analise-credito
@@ -68,14 +70,20 @@ public class RabbitMQConfiguration {
         //para o Java ter permissões para realizar operações no modo RabbitMQ
     }
 
-    //criando Exchange
+    //criando Exchange PropostaPendente
     @Bean
     public FanoutExchange criarFanoutExchangePropostaPendente(){
-        return ExchangeBuilder.fanoutExchange(exchange).build();
+        return ExchangeBuilder.fanoutExchange(exchangePropostaPendente).build();
+    }
+
+    //criando Exchange PropostaConcluida
+    @Bean
+    public FanoutExchange criarFanoutExchangePropostaConcluida(){
+        return ExchangeBuilder.fanoutExchange(exchangePropostaConcluida).build();
     }
 
     // binding da aplicação
-    //passando a fila Queue e a Exchange
+    //passando a fila Queue e a Exchange PropostaPendente
     @Bean
     public Binding criarBindingPropostaPendenteMsAnaliseCredito(){
         return BindingBuilder.bind(criarFilaPropostaPendenteMsAnaliseCredito())
@@ -86,6 +94,20 @@ public class RabbitMQConfiguration {
     public Binding criarBindingPropostaPendenteMsNotificacao(){
         return BindingBuilder.bind(criarFilaPropostaPendenteMsNotificacao())
                 .to(criarFanoutExchangePropostaPendente());
+    }
+
+    // binding da aplicação
+    //passando a fila Queue e a Exchange PropostaConcluida
+    @Bean
+    public Binding criarBindingPropostaConcluidaMsPropostaApp(){
+        return BindingBuilder.bind(criarFilaPropostaConcluidaMsProposta())
+                .to(criarFanoutExchangePropostaConcluida());
+    }
+
+    @Bean
+    public Binding criarBindingPropostaConcluidaMsNotificacao(){
+        return BindingBuilder.bind(criarFilaPropostaConcluidaMsNotificacao())
+                .to(criarFanoutExchangePropostaConcluida());
     }
 
     //criando nosso próprio RabbitTemplate - para não ter erro
